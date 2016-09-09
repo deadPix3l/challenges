@@ -1,11 +1,8 @@
 #!/usr/bin/env python
-
-#import requests
-#x = requests.get("http://adventofcode.com/day/1/input")
-#print x.text
+import adventapi
 from hashlib import md5
 
-x = 'ckczppom'
+x = adventapi.levelInput(4)
 
 i=0
 while not md5(x+str(i)).hexdigest().startswith('00000'): i+=1
