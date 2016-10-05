@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-
 import requests
+
+# A simple API to receive level input effortlessly
+# allowing more time and effort to be focused on solving the problem.
 
 # use your own session cookie to recieve your personal input!
 def levelInput(lvl,session='[redacted]'):
