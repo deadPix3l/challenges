@@ -7,6 +7,7 @@ def prod(x):
     y = 1
     for i in x: y*=i
     return y
+
 def sides(x): return [prod(x)/i for i in x]
 
     

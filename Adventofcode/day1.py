@@ -10,6 +10,5 @@ for k,v in enumerate(x):
     if a==-1 and not p2: 
         print "part 2:",k+1
         p2=True
-    
+
 print "part 1:", a
-    
