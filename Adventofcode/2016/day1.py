@@ -36,11 +36,8 @@ print ''
 
 
 #PART 2
-try:
-    n = b.index('5')
-    for line in x.split():
-        for char in line:
-            n = singlemove(n, p2[char], b)
-        print b[n],
-except IndexError:
-    print "WTF!: ", n
+n = b.index('5')
+for line in x.split():
+    for char in line:
+        n = singlemove(n, p2[char], b)
+    print b[n],
