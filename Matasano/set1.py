@@ -4,16 +4,13 @@ import binascii
 from Crypto.Cipher import AES
 
 import s1fun
-from util import (fixedXor,editDistance,checkECB)
+from util import (repeatingXor,editDistance,checkECB)
 
 ############# challenge 1 ####################
-c1expect = "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t";
 thestr = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
-if base64.b64encode(binascii.unhexlify(thestr)) == c1expect:
-    print "1: pass!";
-else:
-    print "1: fail!";
-    raise Exception(base64.b64encode(binascii.unhexlify(thestr)) + " is incorrect");
+converted = base64.b64encode(binascii.unhexlify(thestr))
+assert converted == "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
+
 ###############################################    
     
 ############# challenge 2 ###################
@@ -23,17 +20,17 @@ c2expect = "746865206b696420646f6e277420706c6179";
 
 thestr = binascii.unhexlify(thestr);
 thekey = binascii.unhexlify(thekey);
-if fixedXor(thestr, thekey) == binascii.unhexlify(c2expect):
+if repeatingXor(thestr, thekey) == binascii.unhexlify(c2expect):
     print "2: pass!";
 else:
     print "2: fail!";
-    raise Exception(binascii.hexlify(fixedXor(thestr, thekey)) + " is wrong!");
+    raise Exception(binascii.hexlify(repeatingXor(thestr, thekey)) + " is wrong!");
 ############################################### 
 
 ############## challenge 3 ################
 thestr = binascii.unhexlify("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736");
 key = s1fun.breakSingleChar(thestr);
-print "3: " + fixedXor(thestr, key);
+print "3: " + repeatingXor(thestr, key);
 ########################################### 
 
 ############# challenge 4 #################
@@ -45,13 +42,13 @@ with open("text/4.txt", 'r') as detect:
         line = line.rstrip();
         line = binascii.unhexlify(line);
         key = s1fun.breakSingleChar(line);
-        linescore = s1fun.score(fixedXor(line, key));
+        linescore = s1fun.score(repeatingXor(line, key));
         
         if linescore > highscore:
             highscore = linescore;
             bestkey = key;
             besthex = binascii.hexlify(line);
-print "4: " + fixedXor(binascii.unhexlify(besthex), bestkey);
+print "4: " + repeatingXor(binascii.unhexlify(besthex), bestkey);
 ############################################
 
 ############# challenge 5 ##################
@@ -61,11 +58,11 @@ thekey = 'ICE';
 
 c5expect = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a\
 26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
-if binascii.hexlify(fixedXor(thestr, thekey)) == c5expect:
+if binascii.hexlify(repeatingXor(thestr, thekey)) == c5expect:
     print "5: pass!";
 else:
     print "5: fail!";
-    raise Exception(binascii.hexlify(fixedXor(thestr, thekey)) + " is not right!");
+    raise Exception(binascii.hexlify(repeatingXor(thestr, thekey)) + " is not right!");
 ###############################################
 
 ############# challenge 6 ##################
@@ -76,7 +73,7 @@ with open("text/6.txt", 'r') as b64crypted:
 top3 = s1fun.findkeylen(breakme)
 print "6: key:", s1fun.breakRepeatingChar(top3, breakme);
 #commented out because the output is long
-#print fixedXor(breakme, bestkey);
+#print repeatingXor(breakme, bestkey);
 ##################################################
 
 ################ challenge 7 #####################
