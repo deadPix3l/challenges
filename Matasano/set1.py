@@ -10,21 +10,16 @@ from util import (repeatingXor,editDistance,checkECB)
 thestr = "49276d206b696c6c696e6720796f757220627261696e206c696b65206120706f69736f6e6f7573206d757368726f6f6d";
 converted = base64.b64encode(binascii.unhexlify(thestr))
 assert converted == "SSdtIGtpbGxpbmcgeW91ciBicmFpbiBsaWtlIGEgcG9pc29ub3VzIG11c2hyb29t"
-
+print "1: pass"
 ###############################################    
     
 ############# challenge 2 ###################
-thestr = "1c0111001f010100061a024b53535009181c";
-thekey = "686974207468652062756c6c277320657965";
-c2expect = "746865206b696420646f6e277420706c6179";
-
-thestr = binascii.unhexlify(thestr);
-thekey = binascii.unhexlify(thekey);
-if repeatingXor(thestr, thekey) == binascii.unhexlify(c2expect):
-    print "2: pass!";
-else:
-    print "2: fail!";
-    raise Exception(binascii.hexlify(repeatingXor(thestr, thekey)) + " is wrong!");
+# This challenge is based on fixed length XOR
+# but using repeating XOR will do just fine
+thestr = binascii.unhexlify("1c0111001f010100061a024b53535009181c");
+thekey = binascii.unhexlify("686974207468652062756c6c277320657965");
+assert repeatingXor(thestr, thekey) == binascii.unhexlify("746865206b696420646f6e277420706c6179")
+print "2: pass"
 ############################################### 
 
 ############## challenge 3 ################
@@ -58,11 +53,8 @@ thekey = 'ICE';
 
 c5expect = "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a\
 26226324272765272a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
-if binascii.hexlify(repeatingXor(thestr, thekey)) == c5expect:
-    print "5: pass!";
-else:
-    print "5: fail!";
-    raise Exception(binascii.hexlify(repeatingXor(thestr, thekey)) + " is not right!");
+assert binascii.hexlify(repeatingXor(thestr, thekey)) == c5expect
+print "5: pass"
 ###############################################
 
 ############# challenge 6 ##################
@@ -71,9 +63,9 @@ with open("text/6.txt", 'r') as b64crypted:
     breakme = base64.b64decode(breakme); 
 
 top3 = s1fun.findkeylen(breakme)
-print "6: key:", s1fun.breakRepeatingChar(top3, breakme);
+print "6: key::", s1fun.breakRepeatingChar(top3, breakme);
 #commented out because the output is long
-#print repeatingXor(breakme, bestkey);
+#print repeatingXor(breakme, s1fun.breakRepeatingChar(top3, breakme));
 ##################################################
 
 ################ challenge 7 #####################
@@ -84,15 +76,13 @@ with open('text/7.txt', 'r') as file7:
     cipher = AES.new(key, AES.MODE_ECB);
     
     dectxt = cipher.decrypt(ciphertext);
-    #output is long. uncomment to see.
-    #print dectxt;
+    # output is long. uncomment to see.
+    # print dectxt;
     
     #condensed output. if first 16 bytes are right
     #then theoretically, its all right
-    if dectxt[:16] == "I'm back and I'm":
-        print "7: pass!";
-    else:
-        print "7: fail!";
+    assert dectxt[:16] == "I'm back and I'm"
+    print "7: pass";
 ###################################################
 
 ################ challenge 8 ######################
