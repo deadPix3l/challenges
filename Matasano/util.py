@@ -1,14 +1,15 @@
 import binascii
 import base64
 import random
+import itertools
 
 ### Xor's A and B, using B as a repeating key ##
-def fixedXor(a,b):
-    x = [chr(ord(a[i]) ^ ord(b[i % len(b)])) for i in range(len(a))];
-    return "".join(x);
+def repeatingXor(a, b):
+    return ''.join(chr(ord(a)^ord(b)) for a,b in zip(a, itertools.cycle(b)))
+
 ## calculates Hamming Distance between A and B ##
 def editDistance(a,b):
-    return sum([bin(ord(i)).count('1') for i in fixedXor(a,b)]);
+    return sum([bin(ord(i)).count('1') for i in repeatingXor(a,b)]);
 
 #################################
 ## implements PKCS#7 padding  ###

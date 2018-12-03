@@ -30,7 +30,7 @@ def breakSingleChar(target):
     bestkey = '';
     for i in range(256):
         i = chr(i);
-        potential = util.fixedXor(target, i);
+        potential = util.repeatingXor(target, i);
         current = score(potential);
 
         if current > highscore:
@@ -55,7 +55,7 @@ def breakRepeatingChar(keylens, breakme):
         for i in blocks:
             poskey += breakSingleChar(i);
 
-        currentscore = score(util.fixedXor(breakme, poskey));
+        currentscore = score(util.repeatingXor(breakme, poskey));
         if currentscore > bestscore:
             bestscore = currentscore;
             bestkey = poskey;
